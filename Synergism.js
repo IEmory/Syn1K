@@ -2934,7 +2934,7 @@ function tick() {
             player.quarkstimer = (90000 + 45000 * player.researches[195])
         }
         if (player.researches[61] > 0) {
-            player.obtainiumtimer += (dt * timeMult);
+            player.obtainiumtimer += (dt * 1000 * timeMult);
         }
         if (player.researches[61] > 0) {
             document.getElementById("automaticobtainium").textContent = "Thanks to researches you automatically gain " + format(calculateAutomaticObtainium(), 3, true) + " Obtainium per real life second."
@@ -2990,7 +2990,7 @@ function tick() {
         }
         calculateObtainium();
         if (player.researches[61] === 1) {
-            player.researchPoints += calculateAutomaticObtainium() * dt
+            player.researchPoints += calculateAutomaticObtainium() * 1000 * dt
             if (player.autoResearch > 0 && player.autoResearchToggle && player.autoResearch <= maxRoombaResearchIndex(player)) {
                 // buyResearch() probably shouldn't even be called if player.autoResearch exceeds the highest unlocked research
                 let counter = 0;
