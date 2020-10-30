@@ -2929,7 +2929,7 @@ function tick() {
         let timeMult = calculateTimeAcceleration();
         lastUpdate = now;
 
-        player.quarkstimer += dt
+        player.quarkstimer += dt * 1000
         if (player.quarkstimer >= (90000 + 45000 * player.researches[195])) {
             player.quarkstimer = (90000 + 45000 * player.researches[195])
         }
