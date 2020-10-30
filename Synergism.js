@@ -2958,7 +2958,7 @@ function tick() {
         }
 
         if (player.shopUpgrades.offeringAutoLevel > 0.5 && player.autoSacrificeToggle) {
-            player.sacrificeTimer += (dt * timeMult)
+            player.sacrificeTimer += (dt * 1000 * timeMult)
             if (player.sacrificeTimer >= 1) {
                 if (player.cubeUpgrades[20] === 0) {
                     let rune = player.autoSacrifice;
@@ -3006,7 +3006,7 @@ function tick() {
         }
 
         if (player.highestchallengecompletions[3] > 0) {
-            autoOfferingCounter += dt
+            autoOfferingCounter += dt * 1000
             if (autoOfferingCounter > 2) {
                 player.runeshards += Math.floor(autoOfferingCounter / 2)
             }
@@ -3014,7 +3014,7 @@ function tick() {
         }
 
         if (player.cubeUpgrades[2] > 0) {
-            autoOfferingCounter2 += dt
+            autoOfferingCounter2 += dt * 1000
             if (autoOfferingCounter2 > (1 / player.cubeUpgrades[2])) {
                 player.runeshards += Math.floor(autoOfferingCounter2 * player.cubeUpgrades[2])
             }
@@ -3022,7 +3022,7 @@ function tick() {
         }
 
         if (player.researches[130] > 0 || player.researches[135] > 0) {
-            autoTalismanTimer += dt
+            autoTalismanTimer += dt * 1000
             if (autoTalismanTimer >= 2) {
                 autoTalismanTimer = autoTalismanTimer % 2;
                 if (player.researches[135] > 0) {
