@@ -2022,6 +2022,7 @@ function multipliers() {
 
 function resourceGain(dt, fast) {
     fast = fast || false
+    dt = dt * 1000; // *1000 global time speed
 
     calculateTotalCoinOwned();
     calculateTotalAcceleratorBoost();
@@ -3077,26 +3078,26 @@ function tick() {
 
         if (dt > 5) {
             while (dt > 5) {
-                player.prestigecounter += 5 * timeMult;
-                player.transcendcounter += 5 * timeMult;
-                player.reincarnationcounter += 5 * timeMult;
-                player.ascensionCounter += 5
+                player.prestigecounter += 5000 * timeMult;
+                player.transcendcounter += 5000 * timeMult;
+                player.reincarnationcounter += 5000 * timeMult;
+                player.ascensionCounter += 5000
                 resourceGain(5 * timeMult);
                 updateAll();
                 dt -= 5
             }
-            player.prestigecounter += (dt * timeMult);
-            player.transcendcounter += (dt * timeMult);
-            player.reincarnationcounter += (dt * timeMult);
+            player.prestigecounter += (dt * 1000 * timeMult);
+            player.transcendcounter += (dt * 1000 * timeMult);
+            player.reincarnationcounter += (dt * 1000 * timeMult);
             player.ascensionCounter += dt
             resourceGain(dt * timeMult);
             updateAll();
             player.offlinetick = Date.now()
         } else if (dt <= 5) {
             resourceGain(dt * timeMult);
-            player.prestigecounter += (dt * timeMult);
-            player.transcendcounter += (dt * timeMult);
-            player.reincarnationcounter += (dt * timeMult);
+            player.prestigecounter += (dt * 1000 * timeMult);
+            player.transcendcounter += (dt * 1000 * timeMult);
+            player.reincarnationcounter += (dt * 1000 * timeMult);
             player.ascensionCounter += dt
         }
     }
