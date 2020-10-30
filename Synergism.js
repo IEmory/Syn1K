@@ -2983,8 +2983,8 @@ function tick() {
         }
 
         if (player.achievements[173] === 1) {
-            player.antSacrificeTimer += (dt * timeMult)
-            player.antSacrificeTimerReal += dt;
+            player.antSacrificeTimer += (dt * 1000 * timeMult)
+            player.antSacrificeTimerReal += dt * 1000;
             document.getElementById("antSacrificeTimer").textContent = formatTimeShort(player.antSacrificeTimer);
             showSacrifice();
         }
@@ -3089,7 +3089,7 @@ function tick() {
             player.prestigecounter += (dt * 1000 * timeMult);
             player.transcendcounter += (dt * 1000 * timeMult);
             player.reincarnationcounter += (dt * 1000 * timeMult);
-            player.ascensionCounter += dt
+            player.ascensionCounter += dt * 1000
             resourceGain(dt * timeMult);
             updateAll();
             player.offlinetick = Date.now()
@@ -3098,7 +3098,7 @@ function tick() {
             player.prestigecounter += (dt * 1000 * timeMult);
             player.transcendcounter += (dt * 1000 * timeMult);
             player.reincarnationcounter += (dt * 1000 * timeMult);
-            player.ascensionCounter += dt
+            player.ascensionCounter += dt * 1000
         }
     }
 
