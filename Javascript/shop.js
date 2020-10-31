@@ -25,12 +25,12 @@ function shopDescriptions(i) {
         case 1:
             rofl.textContent = offerconsumedesc;
             lmao.textContent = "Cost: " + shopBaseCosts.offerPotion + " Quarks.";
-            lol.textContent = "Gain " + format((7200 * player.offeringpersecond * calculateTimeAcceleration()), 0, true) + " Offerings."
+            lol.textContent = "Gain " + format((1000 * 7200 * player.offeringpersecond * calculateTimeAcceleration()), 0, true) + " Offerings."
             break;
         case 2:
             rofl.textContent = obtainiumconsumedesc;
             lmao.textContent = "Cost: " + shopBaseCosts.obtainiumPotion + " Quarks.";
-            lol.textContent = "Gain " + format((7200 * player.maxobtainiumpersecond * calculateTimeAcceleration()), 0, true) + " Obtainium.";
+            lol.textContent = "Gain " + format((1000 * 7200 * player.maxobtainiumpersecond * calculateTimeAcceleration()), 0, true) + " Obtainium.";
             break;
         case 3:
             rofl.textContent = offertimerdesc;
@@ -225,13 +225,13 @@ function useConsumable(i) {
             case 1:
                 if (player.shopUpgrades.offeringPotion > 0.5) {
                     player.shopUpgrades.offeringPotion -= 1;
-                    player.runeshards += Math.floor(7200 * player.offeringpersecond * calculateTimeAcceleration());
+                    player.runeshards += Math.floor(1000 * 7200 * player.offeringpersecond * calculateTimeAcceleration());
                 }
                 break;
             case 2:
                 if (player.shopUpgrades.obtainiumPotion > 0.5) {
                     player.shopUpgrades.obtainiumPotion -= 1;
-                    player.researchPoints += Math.floor(7200 * player.maxobtainiumpersecond * calculateTimeAcceleration());
+                    player.researchPoints += Math.floor(1000 * 7200 * player.maxobtainiumpersecond * calculateTimeAcceleration());
                 }
                 break;
         }
