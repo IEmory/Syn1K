@@ -418,11 +418,10 @@ function reset(i, fast, from) {
 
         let metaData = CalcCorruptionStuff()
         ascensionAchievementCheck(3, metaData[3])
-        // reset other stuff
         historyCategory = "ascend";
         historyKind = "ascend";
-        // When ascending, log ascend history while in trans/reinc challenges, or if this ascension took longer than 1min
-        historyUse = player.currentChallenge.ascension === 0 || player.ascensionCounter > 60;
+        // Log history for every ascend with a C10 completion, overriding previous restrictions
+        historyUse = player.challengecompletions[10] > 0;
         delete historyEntry.offerings;
         delete historyEntry.obtainium;
         delete historyEntry.particles;
@@ -436,6 +435,10 @@ function reset(i, fast, from) {
         historyEntry.wowCubes = metaData[4];
         historyEntry.wowTesseracts = metaData[5];
         historyEntry.wowHypercubes = metaData[6];
+        historyEntry.wowPlatonicCubes = metaData[7];
+        if (player.currentChallenge.ascension && from !== "enterChallenge") {
+            historyEntry.currentChallenge = player.currentChallenge.ascension;
+        }
         // reset auto challenges
         player.currentChallenge.transcension = 0;
         player.currentChallenge.reincarnation = 0;
@@ -493,14 +496,22 @@ function reset(i, fast, from) {
             player.firstOwnedAnts += 1
         }
         if (player.challengecompletions[10] > 0) {
+            let ascCount = 1
+            if(player.ascensionCounter >= 10){
+                if(player.achievements[188] > 0){
+                    ascCount += 99
+                }
+                ascCount *= (Math.min(24 * 3600,player.ascensionCounter)/10) * 1/5 * (player.achievements[189] + player.achievements[202] + player.achievements[209] + player.achievements[216] + player.achievements[223])
+            }
+            if(player.achievements[187] > 0 && metaData[3] > 1e8){
+                ascCount *= (Math.log(metaData[3])/Math.log(10) - 1)
+            }
+            ascCount = Math.floor(ascCount)
+            player.ascensionCount += ascCount;
             player.wowCubes += metaData[4]; //Metadata is defined up in the top of the (i > 3.5) case
             player.wowTesseracts += metaData[5];
             player.wowHypercubes += metaData[6];
             player.wowPlatonicCubes += metaData[7];
-        }
-
-        if (historyUse && player.challengecompletions[10] > 0) {
-            resetHistoryAdd(historyCategory, historyKind, historyEntry);
         }
 
         for (let j = 1; j <= 10; j++) {
@@ -532,7 +543,6 @@ function reset(i, fast, from) {
         calculateTalismanEffects();
         calculateObtainium();
 
-        player.ascensionCount += 1;
         ascensionAchievementCheck(1);
         player.cubesThisAscension.challenges = 0;
         player.cubesThisAscension.reincarnation = 0;
@@ -594,7 +604,7 @@ function reset(i, fast, from) {
         revealStuff();
     }
 
-    if (historyUse && i < 4) {
+    if (historyUse) {
         resetHistoryAdd(historyCategory, historyKind, historyEntry);
     }
 }
