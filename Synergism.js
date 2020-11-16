@@ -573,7 +573,7 @@ const player = {
     hypercubeQuarkDaily: 0,
     loadedOct4Hotfix: false,
     loadedNov13Vers: true,
-    version: '2.1.0'
+    version: '2.1.1'
 }
 
 const blank_save = Object.assign({}, player);
@@ -2633,20 +2633,6 @@ function updateAll() {
         buyMax('fifth', 'Diamonds', 15, 1e100, true)
     }
 
-
-    if (player.resettoggle1 === 1 || player.resettoggle1 === 0) {
-        if (player.toggles[15] === true && player.achievements[43] === 1 && prestigePointGain.greaterThanOrEqualTo(player.prestigePoints.times(Decimal.pow(10, player.prestigeamount))) && player.coinsThisPrestige.greaterThanOrEqualTo(1e16)) {
-            resetachievementcheck(1);
-            reset(1, true)
-        }
-    }
-    if (player.resettoggle1 === 2) {
-        let time = Math.max(0.25, player.prestigeamount);
-        if (player.toggles[15] === true && player.achievements[43] === 1 && player.prestigecounter >= time && player.coinsThisPrestige.greaterThanOrEqualTo(1e16)) {
-            resetachievementcheck(1);
-            reset(1, true);
-        }
-    }
     let c = 0;
     c += Math.floor(rune3level / 16 * effectiveLevelMult) * 100 / 100
     if (player.upgrades[73] > 0.5 && player.currentChallenge.reincarnation !== 0) {
@@ -2686,21 +2672,6 @@ function updateAll() {
         buyMax('fifth', 'Mythos', 15, 1e16, true)
     }
 
-    if (player.resettoggle2 === 1 || player.resettoggle2 === 0) {
-        if (player.toggles[21] === true && player.upgrades[89] === 1 && transcendPointGain.greaterThanOrEqualTo(player.transcendPoints.times(Decimal.pow(10, player.transcendamount))) && player.coinsThisTranscension.greaterThanOrEqualTo(1e100) && player.currentChallenge.transcension === 0) {
-            resetachievementcheck(2);
-            reset(2, true);
-        }
-    }
-    if (player.resettoggle2 === 2) {
-        let time = Math.max(0.25, player.transcendamount);
-        if (player.toggles[21] === true && player.upgrades[89] === 1 && player.transcendcounter >= time && player.coinsThisTranscension.greaterThanOrEqualTo(1e100) && player.currentChallenge.transcension === 0) {
-            resetachievementcheck(2);
-            reset(2, true);
-        }
-    }
-
-
 //Autobuy "Reincarnation" Tab
 
     if (player.toggles[22] === true && player.reincarnationPoints.greaterThanOrEqualTo(player.firstCostParticles)) {
@@ -2717,21 +2688,6 @@ function updateAll() {
     }
     if (player.toggles[26] === true && player.reincarnationPoints.greaterThanOrEqualTo(player.fifthCostParticles)) {
         buyParticleBuilding('fifth', 1e16, true)
-    }
-    if (player.currentChallenge.ascension !== 12) {
-        if (player.resettoggle3 === 2) {
-            let time = Math.max(0.25, player.reincarnationamount);
-            if (player.toggles[27] === true && player.researches[46] > 0.5 && player.transcendShards.greaterThanOrEqualTo("1e300") && player.reincarnationcounter >= time && player.currentChallenge.transcension === 0 && player.currentChallenge.reincarnation === 0) {
-                resetachievementcheck(3);
-                reset(3, true);
-            }
-        }
-        if (player.resettoggle3 === 1 || player.resettoggle3 === 0) {
-            if (player.toggles[27] === true && player.researches[46] > 0.5 && reincarnationPointGain.greaterThanOrEqualTo(player.reincarnationPoints.times(Decimal.pow(10, player.reincarnationamount))) && player.transcendShards.greaterThanOrEqualTo(1e300) && player.currentChallenge.transcension === 0 && player.currentChallenge.reincarnation === 0) {
-                resetachievementcheck(3);
-                reset(3, true)
-            }
-        }
     }
 
 //Autobuy "ascension" tab
@@ -3112,6 +3068,55 @@ function tick() {
             player.reincarnationcounter += (dt * 1000 * timeMult);
             player.ascensionCounter += dt * 1000
         }
+
+        //Check for automatic resets
+        //Auto Prestige. === 1 indicates amount, === 2 indicates time.
+        if (player.resettoggle1 === 1 || player.resettoggle1 === 0) {
+            if (player.toggles[15] === true && player.achievements[43] === 1 && prestigePointGain.greaterThanOrEqualTo(player.prestigePoints.times(Decimal.pow(10, player.prestigeamount))) && player.coinsThisPrestige.greaterThanOrEqualTo(1e16)) {
+                resetachievementcheck(1);
+                reset(1, true)
+            }
+        }
+        if (player.resettoggle1 === 2) {
+            autoResetTimers.prestige += dt;
+            let time = Math.max(0.01, player.prestigeamount);
+            if (player.toggles[15] === true && player.achievements[43] === 1 && autoResetTimers.prestige >= time && player.coinsThisPrestige.greaterThanOrEqualTo(1e16)) {
+                resetachievementcheck(1);
+                reset(1, true);
+            }
+        }
+
+        if (player.resettoggle2 === 1 || player.resettoggle2 === 0) {
+            if (player.toggles[21] === true && player.upgrades[89] === 1 && transcendPointGain.greaterThanOrEqualTo(player.transcendPoints.times(Decimal.pow(10, player.transcendamount))) && player.coinsThisTranscension.greaterThanOrEqualTo(1e100) && player.currentChallenge.transcension === 0) {
+                resetachievementcheck(2);
+                reset(2, true);
+            }
+        }
+        if (player.resettoggle2 === 2) {
+            autoResetTimers.transcension += dt
+            let time = Math.max(0.01, player.transcendamount);
+            if (player.toggles[21] === true && player.upgrades[89] === 1 && autoResetTimers.transcension >= time && player.coinsThisTranscension.greaterThanOrEqualTo(1e100) && player.currentChallenge.transcension === 0) {
+                resetachievementcheck(2);
+                reset(2, true);
+            }
+        }
+
+        if (player.currentChallenge.ascension !== 12) {
+            autoResetTimers.reincarnation += dt;
+            if (player.resettoggle3 === 2) {
+                let time = Math.max(0.01, player.reincarnationamount);
+                if (player.toggles[27] === true && player.researches[46] > 0.5 && player.transcendShards.greaterThanOrEqualTo("1e300") && autoResetTimers.reincarnation >= time && player.currentChallenge.transcension === 0 && player.currentChallenge.reincarnation === 0) {
+                    resetachievementcheck(3);
+                    reset(3, true);
+                }
+            }
+            if (player.resettoggle3 === 1 || player.resettoggle3 === 0) {
+                if (player.toggles[27] === true && player.researches[46] > 0.5 && reincarnationPointGain.greaterThanOrEqualTo(player.reincarnationPoints.times(Decimal.pow(10, player.reincarnationamount))) && player.transcendShards.greaterThanOrEqualTo(1e300) && player.currentChallenge.transcension === 0 && player.currentChallenge.reincarnation === 0) {
+                    resetachievementcheck(3);
+                    reset(3, true)
+                }
+            }
+        }
     }
 
     calculateOfferings(3)
@@ -3383,7 +3388,7 @@ window['addEventListener' in window ? 'addEventListener' : 'attachEvent']('load'
 
     const version = player.version
     const ver = document.getElementById('versionnumber');
-    ver && (ver.textContent = `You're playing on v${player.version} - The Abyss [Last Update: 4:45 PM UTC-8 Nov 13]`);
+    ver && (ver.textContent = `You're playing on v${player.version} - The Abyss [Last Update: 5:30 PM UTC-8 Nov 13]`);
     document.title = 'Synergism v' + player.version;
 
     const dec = LZString.decompressFromBase64(localStorage.getItem('Synergysave2'));
