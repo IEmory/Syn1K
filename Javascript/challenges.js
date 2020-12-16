@@ -2,13 +2,13 @@ function challengeDisplay(i, changefocus, automated) {
     changefocus = (changefocus === null || changefocus === undefined) ? true : changefocus;
     if (changefocus) {
         challengefocus = i;
-        document.getElementById("challengeDetails").style.display = "block"
+        document.getElementById("oneChallengeDetails").style.display = "block"
     }
 
     let quarksMultiplier = 1;
     if (changefocus) {
         challengefocus = i;
-        document.getElementById("challengeDetails").style.display = "block";
+        document.getElementById("oneChallengeDetails").style.display = "block";
         triggerChallenge = i
     }
 
@@ -364,7 +364,7 @@ function highestChallengeRewards(chalNum, highestValue) {
 function calculateChallengeRequirementMultiplier(type, completions, special) {
     special = special || 0;
     let requirementMultiplier = 1;
-    requirementMultiplier *= Math.max(1, hyperchallengedMultiplier[player.usedCorruptions[4]] / (1 + player.platonicUpgrades[8]));
+    requirementMultiplier *= Math.max(1, hyperchallengedMultiplier[player.usedCorruptions[4]] / (1 + player.platonicUpgrades[8] / 2.5));
     switch (type) {
         case "transcend":
             (completions >= 75) ?
@@ -504,7 +504,7 @@ if (player.researches[150] > 0 && player.autoChallengeRunning && (player.reincar
             autoChallengeTimerIncrement = 0;
         }
         if (player.currentChallenge.reincarnation === 0 && player.autoChallengeIndex > 5) {
-            while (player.challengecompletions[player.autoChallengeIndex] >= (25 + 5 * player.cubeUpgrades[29] + 2 * player.shopUpgrades.challengeExtension) || !player.autoChallengeToggles[player.autoChallengeIndex]) {
+            while (player.challengecompletions[player.autoChallengeIndex] >= (25 + 5 * player.cubeUpgrades[29] + 2 * player.shopUpgrades.challengeExtension + 5 * player.platonicUpgrades[5]) || !player.autoChallengeToggles[player.autoChallengeIndex]) {
                 player.autoChallengeIndex += 1
                 if (player.autoChallengeIndex > 10) {
                     player.autoChallengeIndex = 1;
